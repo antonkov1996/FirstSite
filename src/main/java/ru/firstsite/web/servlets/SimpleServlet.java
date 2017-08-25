@@ -9,6 +9,7 @@ import java.io.IOException;
 public class SimpleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().write("ok");
+        resp.setCharacterEncoding("Windows-1251");
+        resp.getWriter().write("ok12 привет");
     }
 }

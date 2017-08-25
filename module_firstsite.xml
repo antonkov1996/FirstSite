@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_firstsite" default="compile.module.firstsite">
+  <dirname property="module.firstsite.basedir" file="${ant.file.module_firstsite}"/>
+  
+  <property name="module.jdk.home.firstsite" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.firstsite" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.firstsite" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.firstsite" value="-encoding UTF-8 -source 1.5 -target 1.5 ${compiler.args}"/>
+  
+  <property name="firstsite.output.dir" value="${module.firstsite.basedir}/target/classes"/>
+  <property name="firstsite.testoutput.dir" value="${module.firstsite.basedir}/target/test-classes"/>
+  
+  <path id="firstsite.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="firstsite.module.production.classpath">
+    <path refid="${module.jdk.classpath.firstsite}"/>
+    <path refid="library.maven:_javax.servlet:javax.servlet-api:3.1.0.classpath"/>
+  </path>
+  
+  <path id="firstsite.runtime.production.module.classpath">
+    <pathelement location="${firstsite.output.dir}"/>
+    <path refid="library.maven:_javax.servlet:javax.servlet-api:3.1.0.classpath"/>
+  </path>
+  
+  <path id="firstsite.module.classpath">
+    <path refid="${module.jdk.classpath.firstsite}"/>
+    <pathelement location="${firstsite.output.dir}"/>
+    <path refid="library.maven:_javax.servlet:javax.servlet-api:3.1.0.classpath"/>
+  </path>
+  
+  <path id="firstsite.runtime.module.classpath">
+    <pathelement location="${firstsite.testoutput.dir}"/>
+    <pathelement location="${firstsite.output.dir}"/>
+    <path refid="library.maven:_javax.servlet:javax.servlet-api:3.1.0.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.firstsite">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.firstsite">
+    <patternset refid="excluded.from.module.firstsite"/>
+  </patternset>
+  
+  <path id="firstsite.module.sourcepath">
+    <dirset dir="${module.firstsite.basedir}">
+      <include name="src/main/java"/>
+      <include name="src/main/resources"/>
+    </dirset>
+  </path>
+  
+  <path id="firstsite.module.test.sourcepath">
+    <dirset dir="${module.firstsite.basedir}">
+      <include name="src/test/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.firstsite" depends="compile.module.firstsite.production,compile.module.firstsite.tests" description="Compile module FirstSite"/>
+  
+  <target name="compile.module.firstsite.production" depends="register.custom.compilers" description="Compile module FirstSite; production classes">
+    <mkdir dir="${firstsite.output.dir}"/>
+    <javac2 destdir="${firstsite.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.firstsite}/javac">
+      <compilerarg line="${compiler.args.firstsite}"/>
+      <bootclasspath refid="firstsite.module.bootclasspath"/>
+      <classpath refid="firstsite.module.production.classpath"/>
+      <src refid="firstsite.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.firstsite"/>
+    </javac2>
+    
+    <copy todir="${firstsite.output.dir}">
+      <fileset dir="${module.firstsite.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.firstsite.basedir}/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.firstsite.tests" depends="register.custom.compilers,compile.module.firstsite.production" description="compile module FirstSite; test classes" unless="skip.tests">
+    <mkdir dir="${firstsite.testoutput.dir}"/>
+    <javac2 destdir="${firstsite.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.firstsite}/javac">
+      <compilerarg line="${compiler.args.firstsite}"/>
+      <bootclasspath refid="firstsite.module.bootclasspath"/>
+      <classpath refid="firstsite.module.classpath"/>
+      <src refid="firstsite.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.firstsite"/>
+    </javac2>
+    
+    <copy todir="${firstsite.testoutput.dir}">
+      <fileset dir="${module.firstsite.basedir}/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.firstsite" description="cleanup module">
+    <delete dir="${firstsite.output.dir}"/>
+    <delete dir="${firstsite.testoutput.dir}"/>
+  </target>
+</project>

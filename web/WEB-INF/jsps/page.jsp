@@ -22,6 +22,6 @@ ${requestScope.name}
 <hr>
 ${requestScope.list1}
 <hr>
-<page:test/>
+<page:test attr="Текст через тег"/>
 </body>
 </html>

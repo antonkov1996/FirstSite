@@ -54,5 +54,6 @@
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.34" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:unknown" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:unknown" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-validator:unknown" level="project" />
   </component>
 </module>
